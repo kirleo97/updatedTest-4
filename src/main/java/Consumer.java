@@ -12,7 +12,7 @@ public class Consumer extends Thread {
         start();
     }
 
-    public void increaseGoods(int quantity) {
+    public void buyGoods(int quantity) {
         goods.addAndGet(quantity);
     }
 
@@ -20,7 +20,7 @@ public class Consumer extends Thread {
     public void run() {
         while (Store.getGoods() != 0) {
             int quantity = 1 + (int) (Math.random() * 9);
-            increaseGoods(Store.tryToBuy(quantity));
+            buyGoods(Store.tryToBuy(quantity));
             phaser.arriveAndAwaitAdvance();
         }
         int numberOfPurchases = phaser.arriveAndDeregister();
