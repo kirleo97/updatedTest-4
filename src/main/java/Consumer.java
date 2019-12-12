@@ -24,7 +24,7 @@ public class Consumer extends Thread {
             phaser.arriveAndAwaitAdvance();
         }
         int numberOfPurchases = phaser.arriveAndDeregister();
-        System.out.println("ВСЕГО потребитель " + this + " совершил " + numberOfPurchases + " покупок и купил " + goods + " товаров");
+        System.out.println("ВСЕГО потребитель " + this + " совершил " + numberOfPurchases + " покупок и приобрел " + goods + " товаров");
     }
 
     @Override
