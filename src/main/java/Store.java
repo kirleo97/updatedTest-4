@@ -1,5 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Store {
@@ -7,13 +5,14 @@ public class Store {
 
     public static int getGoods() { return goods.get(); }
 
-    public synchronized static void tryToBuy(Consumer consumer, int quantity) {
+    public synchronized static int tryToBuy(int quantity) {
         if (areAnyGoodsLeft()) {
             quantity = howManyGoodsIsPossibleToBuy(quantity);
             sellGoods(quantity);
-            DataBase.changeConsumerData(consumer, quantity);
             printDeal(quantity);
+            return quantity;
         }
+        return 0;
     }
 
     public static boolean areAnyGoodsLeft() {
@@ -34,25 +33,5 @@ public class Store {
     public static void printDeal(int quantity) {
         System.out.println("Потребитель (поток) " + Thread.currentThread().getName() + " купил " + quantity + " товаров");
         System.out.println("Сейчас товаров на складе " + goods + "\n");
-    }
-
-
-    public static class DataBase {
-        private static Map<Consumer, int[]> map = new HashMap<>();
-
-        public static Map<Consumer, int[]> getMap() { return map; }
-
-        public static void addNewConsumer(Consumer consumer) {
-            map.put(consumer, new int[2]);
-        }
-
-        public static void changeConsumerData(Consumer consumer, int quantity) {
-            map.get(consumer)[0]++;
-            map.get(consumer)[1] += quantity;
-        }
-
-        public static void getResults(Consumer consumer) {
-            System.out.println("ВСЕГО потребитель " + consumer + " совершил " + map.get(consumer)[0] + " покупок и купил " + map.get(consumer)[1] + " товаров");
-        }
     }
 }
